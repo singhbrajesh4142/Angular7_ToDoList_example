@@ -1,0 +1,68 @@
+<div class="container">
+    <div>
+            <h2>My Tasks</h2>
+    </div>
+    <div>
+            <label>Enter Task Name</label><br/>
+            <input type="text" id="txtMyTask" [(ngModel)]="taskName">
+            <button class="btn" id="btnAddTask" (click)="addTaskIntoList()">Add Task</button>
+    </div>
+    <hr/>
+
+    <div id="taskListContainer" style="position: relative;">
+        <div *ngIf="taskList">
+            <div *ngFor="let task of taskList; index as i">
+                <div class="taskItem">
+                    <div class="row">
+                        <div class="chk">
+                            <input type="checkbox" [(ngModel)]="task.checked">
+                        </div>
+                        <div class="div_task_avatar_status" (click)="showInfoPopUp(i, task.taskName)">
+                                <div class="task_name">{{ task.taskName }}</div>
+                                <div class="avatar_image"><img src="\assets\images\user.png" ></div>
+                                <div class="status"><span [ngClass]="{'status_bg_progress':!task.checked,
+                                    'status_bg_completed':task.checked}"></span></div>
+                        </div>
+                        <div class="due_date">{{ task.dueDate }}</div>
+                        <div class="delete_icon"><img src="\assets\images\delete.png" (click)="deleteItem(i)"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="div_task_info" [ngClass]="{
+            'hidePopUp': hideInfoPop,
+            'showPopUp': !hideInfoPop
+        }" >
+            <div id="div_task_info_header">
+                <h3>Task Info</h3>
+                <button class="btn" style="margin-right: 50px;" (click)="markAsDone()" >Mark Complete</button>
+            </div>
+            <div id="div_taskName">
+                <label>Task Name</label><br/>
+                <input type="text" [(ngModel)]="task_name"  value={{task_name}}>
+                <input type="text" value={{index}} hidden>
+            </div>
+            <div class="row" style="margin-top: 10px;">
+                    <div class="div_50">
+                        <label>Assigned To</label><br/>
+                        <select [(ngModel)]="user_name">
+                            <option *ngFor="let user of users.data">{{ user.first_name + " " + user.last_name }}</option>
+                        </select>
+                    </div>
+                    <div class="div_50">
+                        <label>Due Date</label><br/>
+                        <input type="date" [(ngModel)] ="task_date">     
+                    </div>           
+            </div>
+            <div style="margin-top:10px;">
+                <label>Description</label><br/>
+                <textarea rows="6" cols="30" [(ngModel)]="task_description"></textarea>
+            </div>
+            <button id="btn_save" class="btn" (click)="saveTaskInfo()" >Save</button>
+            
+            <div id="cross_button" (click)="hideInfoPopUp()" >X</div>
+        </div>    
+    </div>
+</div>
